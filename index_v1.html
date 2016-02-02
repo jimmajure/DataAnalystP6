@@ -1,0 +1,566 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>Pacific Buoy Temperatures</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+	<style>
+		body {
+			margin-top: 60px;
+		}
+		#map {
+		  height: 250px;
+		}
+		.data {
+		  height: 400px;
+		}
+		.plot {
+			height: 400px;
+			width: 100%;
+		}
+		.axis path {
+			display: none;;
+		}
+		#xaxis line {
+			stroke: #888;
+		}
+		#yaxis line {
+			stroke: #555;
+			stroke-dasharray: 2,2;
+		}
+		#years {
+			padding-top: 20px;
+			width: 100%;
+			font-size: 18pt;
+			text-align: center;
+		}
+		#buoylabel {
+			padding-top: 20px;
+			width: 100%;
+			font-size: 18pt;
+			text-align: center;
+		}
+		#stations{
+			font-size: 14pt;
+		}
+		.count {
+			font-size: 12pt;
+		}
+		.glyphicon-arrow-down {
+			color: steelblue;
+		}
+		.glyphicon-arrow-up {
+			color: darkred;
+		}
+		.glyphicon-arrow-right {
+			color: slategray;
+		}
+		.glyphicon-play {
+			font-size: 20pt;
+		}
+		.glyphicon-pause {
+			font-size: 20pt;
+		}
+		.page-top {
+			color: white;
+			font-size: 24px;
+			margin-top: 10px
+		}
+	</style>
+
+  </head>
+
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          </button>
+          <label class="page-top" href="#">Explore Pacific Weather Data</label>
+        </div>
+      </div>
+    </nav>
+	  <div class="container">
+
+		<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+		  <div class="panel panel-default">
+			<div class="panel-heading" role="tab" id="headingOne">
+			  <h4 class="panel-title">
+				<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+				  Overview (click to collapse)
+				</a>
+			  </h4>
+			</div>
+			<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+			  <div class="panel-body">
+				<label class="writeupheader">Description</label>
+				<p>
+					Explore air temperature observation data collected from 83 weather buoys located in the
+					equitorial Pacific ocean. The data were collected in the period from 1979 thru 2015. 
+				</p>
+				<label class="writeupheader">Interactions</label>
+				<p>
+					A "From-Year" and a "To-Year" can be selected to plot the temperature change
+					between the two years for all stations that have data in both years. Years are 
+					selected using the checkboxes at the top of the Graph View.
+				</p>
+				<label class="writeupheader">Map View</label>
+				<p>
+					The Map View shows the locations of the buoys. As years are selected
+					for review, the buoys from which the data were collected are highlighted.
+				</p>
+				<label class="writeupheader">Graph View</label>
+				<p>
+					The Graph View displays the temperature change between the two selected years. 
+					The Graph View contains a single line for each station that has data in both
+					the "From-Year" and the "To-Year".
+				</p>
+				<p>
+					Hover over lines in the plot to see the represented station displayed in the
+					Map View.
+				</p>
+				<label class="writeupheader">Animations</label>
+				<p>
+					The selected years can be animated by choosing either "From-Year", "To-Year"
+					or both and clicking the play button.
+				</p>
+				<ul>
+					<li>If both are selected, both years are incremented each second until the 
+						"To-Year" reaches 2015.</li>
+					<li>If only "From-Year" is selected, The from-year is incremented until
+						it reaches the to-year.</li>
+					<li>If only "To-Year" is selected, The to-year is deccremented until
+						it reaches the from-year.</li>
+				</ul>
+				<label class="writeupheader">Patterns/Trends</label>
+				<p>
+					There are several patterns/trends that can be discovered in the data.
+				</p>
+				<ul>
+					<li>Temperatures in the eastern part of the area are generally lower than
+						those in the west. Hover over lines in the Graph View to investigate.</li>
+					<li>The data is more sparse in the early years and more complete in later years.</li>
+					<li>Temperatures generally rise over the course of time, but it can be a bumpy ride.</li>
+				</ul>
+			  </div>
+			</div>
+		  </div>
+		</div>
+	  <div class="row" style="height: 40px">
+		<div class="col-xs-10">
+			<label id="buoylabel">83 Equitorial Pacific Weather Buoys</label>
+		</div>
+	  </div>
+      <div class="row">
+		<div id="map" class="col-xs-12"></div>
+	  </div>
+	  <div class="row" style="height: 40px">
+		<div class="col-xs-10">
+			<label id="years"></label>
+		</div>
+	  </div>
+	  <div class="row">
+		<div class="col-xs-10 data">
+			<svg class="plot">
+				<g id="xaxis" class="axis"/>
+				<g id="yaxis" class="axis"/>
+				<g class="lines"/>
+				<g id="checkboxes"/>
+			</svg>
+		</div>
+		<div class="col-xs-2 data">
+			<div class="panel panel-default">
+				<div class="panel-heading"><label id="stations"></label></div>
+				<div class="panel-body">
+					<label id="hotter" class="count"></label>
+					<label id="similar" class="count"></label>
+					<label id="colder" class="count"></label>
+				</div>
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-heading"><label>Animate</label></div>
+				<div class="panel-body">
+					<div>
+					<input id="fromYear" type="checkbox" class="count"> From Year</input>
+					</div>
+					<div>
+					<input id="toYear" type="checkbox" class="count"> To Year</input>
+					</div>
+					<div>
+					<button id="play" type="button" class="btn btn-default">
+						<span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+					</button>
+					<button id="pause" type="button" class="btn btn-default hidden">
+						<span class="glyphicon glyphicon-pause" aria-hidden="true"></span>
+					</button>
+					<div>
+				</div>
+			</div>
+		</div>
+      </div>
+
+    </div><!-- /.container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script>
+		var map;
+		var locData;
+		var tmpData;
+		var currentData;
+		var yscale, xscale;
+		var defaultMapIcon;
+		var selectedMapIcon;
+		var highlightedMapIcon;
+		var year1 = 1985;
+		var year2 = 2015;
+		var year1Changed = false;
+		
+		var glyphUp = '<span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> ';
+		var glyphRight = '<span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span> ';
+		var glyphDown = '<span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> ';
+		
+		var fromYearAni = false;
+		var toYearAni = false;
+		var animationDone = true;
+		var animationInterval;
+		
+		function retrieveLocations() {
+			d3.csv("data/locations.csv", initMap);
+		}
+
+		function initMap(data) {
+			defaultMapIcon = {
+				path: google.maps.SymbolPath.CIRCLE,
+				scale: 2
+			};
+			selectedMapIcon = {
+				path: google.maps.SymbolPath.CIRCLE,
+				scale: 3,
+				fillColor: 'red',
+				fillOpacity: 1,
+				strokeColor: 'red'
+			};
+			highlightedMapIcon = {
+				path: google.maps.SymbolPath.CIRCLE,
+				scale: 5,
+				fillColor: 'red',
+				fillOpacity: 1,
+				strokeColor: 'red'
+			};
+			gdata = data;
+			for (var i in data) {
+				o = data[i]
+				o.lat = parseFloat(o.lat)
+				o.lon = parseFloat(o.lon)
+				o.marker = new google.maps.Marker({
+					position: {lat: o.lat, lng: o.lon},
+					title: o.station,
+					icon: defaultMapIcon
+				});
+				/*
+				o.marker.addListener('mouseout', function () {
+					var station = this.title;
+					console.log("mouseout"+station);
+					unHighlightStation(station);
+				});
+				o.marker.addListener('mouseover', function () {
+					var station = this.title;
+					console.log("mouseover"+station);
+					highlightStation(station);
+				});
+				*/
+			}
+			map = new google.maps.Map(document.getElementById('map'), {
+				center: {lat: 0, lng: -160},
+				zoom: 3
+			});
+			for (var i in data) {
+				data[i].marker.setMap(map);
+			}
+			locData = d3.map();
+			for (var i in data) {
+				o = data[i];
+				locData.set(o.station, o);
+			}
+			d3.csv("data/yrly.csv", initTemperatureData);
+		}
+		
+		function highlightStation(station) {
+			d3.select('g.lines').selectAll('line').each(function (d) {
+				var sel = d3.select(this);
+				if (station == sel.attr('station')) {
+					sel.transition()
+						.duration(500)
+						.attr('stroke-width',3)
+						.attr('stroke','red');
+				}
+			});
+			m  = locData.get(station).marker;
+			m.setMap(null);
+			m.icon = highlightedMapIcon;
+			m.setMap(map);
+		}
+		
+		function unHighlightStation(station) {
+			d3.select('g.lines').selectAll('line').each(function (d) {
+				var sel = d3.select(this);
+				if (station == sel.attr('station')) {
+					sel.transition()
+						.duration(500)
+						.attr('stroke-width',1)
+						.attr('stroke',colorFunction);
+				}
+			});
+			m  = locData.get(station).marker;
+			m.setMap(null);
+			m.icon = selectedMapIcon;
+			m.setMap(map);
+		}
+		
+		function initTemperatureData(data) {
+			width = 950;
+			height = 400;
+			tmpData = data;
+			yscale = d3.scale.linear().domain([20, 30]).range([height-25,25]);
+			yAxis = d3.svg.axis().scale(yscale).orient("left").tickSize(width-50);
+			d3.select("#yaxis").attr("transform", "translate("+width+",0)").call(yAxis);
+			
+			xscale = d3.scale.linear().domain([1979,2015]).range([60,width-35]);
+			xAxis = d3.svg.axis().scale(xscale).orient("bottom").tickSize(height-30);
+			d3.select("#xaxis").attr("transform", "translate(0,10)").call(xAxis);
+			
+			var years = [];
+			for (i = 1979; i<=2015; i++) {years.push(i);};
+			d3.select("#checkboxes").selectAll('foreignObject')
+				.data(years)
+				.enter()
+				.append("foreignObject")
+				.attr('x', function (d) {return xscale(d)-6;})
+				.attr('y', 4)
+				.attr('width', 17)
+				.attr('height', 17)
+				.property('value', function(d) {return d;})
+				.html(function(d) { 
+					return "<input type='checkbox' name='"+d+"' onchange='checkboxChange(this, "+d+")'></input>";
+				});
+
+			d3.select("#play").on('click', startAnimation);
+			d3.select("#pause").on('click', stopAnimation);
+
+			showYears(year1, year2);
+
+		}
+		
+		function startAnimation() {
+			fromYearAni = d3.select("#fromYear").property('checked');
+			toYearAni = d3.select("#toYear").property('checked');
+			animationDone = false;
+			
+			if (fromYearAni | toYearAni) {
+				animationInterval = setInterval(runAnimation,1000);
+			}
+			d3.select("#play").classed("hidden",true);
+			d3.select("#pause").classed("hidden",false);
+		}
+		
+		function stopAnimation() {
+			clearInterval(animationInterval);
+			d3.select("#play").classed("hidden",false);
+			d3.select("#pause").classed("hidden",true);
+		}
+		
+		function runAnimation() {
+			if (fromYearAni & toYearAni) {
+				if (year2 < 2015) {
+					year1 += 1;
+					year2 += 1;
+					showYears(year1, year2);
+				} else {
+					stopAnimation();
+				}
+			} else if (fromYearAni) {
+				if (year1<(year2-1)) {
+					year1 += 1;
+					showYears(year1, year2);
+				} else {
+					stopAnimation();
+				}
+			} else if (toYearAni) {
+				if (year2>(year1+1)) {
+					year2 -= 1;
+					showYears(year1, year2);
+				} else {
+					stopAnimation();
+				}
+			}
+			
+			return animationDone;
+		}
+		
+		function checkboxChange(cb, year){
+			if (cb.checked) {
+				if (year <= year1) {
+					year1 = year;
+					year1Changed = true;
+				} else if (year >= year2) {
+					year2 = year;
+					year1Changed = false;
+				} else if (year1Changed) {
+					year1 = year;
+				} else {
+					year2 = year
+				}
+				showYears(year1, year2);
+			} else {
+				// can't uncheck a checkbox...
+				cb.checked = true;
+				if (year == year1) {
+					year1Changed = true;
+				} else {
+					year1Changed = false;
+				}
+			}
+		}
+		
+		function setYears() {
+			d3.select("#checkboxes").selectAll('input')
+				.each(function(d) {
+					var sel = d3.select(this);
+					var cyear = parseInt(sel.property('name'));
+					if (cyear==year1) {
+						sel.property('checked', true);
+					} else if (cyear==year2) {
+						sel.property('checked', true);
+					} else {
+						sel.property('checked', false);
+					}
+				});
+		}
+
+		function colorFunction(d) {
+			var color;
+			if (Math.abs(d.v1-d.v2)<0.2) {
+				color='slategray';
+				tmps[1] = tmps[1] + 1;
+			} else if (d.v1 < d.v2) {
+				color='darkred';
+				tmps[0] = tmps[0] + 1;
+			} else {
+				color='steelblue';
+				tmps[2] = tmps[2] + 1;
+			}
+			return color;
+		}
+
+		function showYears(year1, year2) {
+			setYears();
+			currentData = getYearPair(year1, year2);
+			
+			d3.select('g.lines').selectAll('line').remove();
+			var sel = d3.select('g.lines').selectAll('line')
+				.data(currentData.values())
+				.enter()
+				.append('line');
+			
+			tmps = [0,0,0]
+			sel.attr("stroke",colorFunction)
+			.attr("x1", function (d) {
+				return xscale(d.year1);
+			})
+			.attr("y1", function (d) {
+				return yscale(d.v1);
+			})
+			.attr("x2", function (d) {
+				return xscale(d.year2);
+			})
+			.attr("y2", function (d) {
+				return yscale(d.v2);
+			})
+			.attr("station", function (d) {
+				return d.station;
+			})
+			.on('mouseover', function() {
+				var station = d3.select(this).attr('station');
+				highlightStation(station);
+			}).on('mouseout', function() {
+				var station = d3.select(this).attr('station');
+				unHighlightStation(station);
+			});
+			
+			showSelectedStations();
+			
+			d3.select("#stations").text(currentData.size()+" Stations");
+			d3.select("#years").text("Yearly Median Air Temperature: "+year1 + "-" + year2);
+			d3.select("#hotter").html(glyphUp+tmps[0] + " Increase");
+			d3.select("#similar").html(glyphRight+tmps[1] + " Similar");
+			d3.select("#colder").html(glyphDown+tmps[2] + " Decrease");
+		}
+		
+		function showSelectedStations() {
+			keys = locData.keys();
+			for (k in keys) {
+				if (currentData.get(keys[k])) {
+					m  = locData.get(keys[k]).marker;
+					m.setMap(null);
+					m.icon = selectedMapIcon;
+					m.setMap(map);
+				} else {
+					m  = locData.get(keys[k]).marker;
+					m.setMap(null);
+					m.icon = defaultMapIcon;
+					m.setMap(map);
+				}
+			}
+		}
+		
+		function getYearPair(year1, year2) {
+			var result = d3.map();
+			var odata = [];
+			for (i in tmpData) {
+				if (tmpData[i].year == year1) {
+					result.set(tmpData[i].station, {
+						station: tmpData[i].station,
+						year1: parseInt(tmpData[i].year),
+						v1: parseFloat(tmpData[i].v)
+					});
+				}
+			}
+			for (i in tmpData) {
+				if (tmpData[i].year == year2) {
+					if (result.has(tmpData[i].station)) {
+						var d = result.get(tmpData[i].station);
+						d.year2 = parseInt(tmpData[i].year);
+						d.v2 = parseFloat(tmpData[i].v);
+					}
+				}
+			}
+			debugger;
+			var keys = result.keys();
+			for (i in keys) {
+				if (!result.get(keys[i]).year2) {
+					result.remove(keys[i]);
+				}
+			}
+			return result;
+		}
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBsmLKhP-eMzn4qYe3tWp3oD7zfFtRR0Pw&callback=retrieveLocations" async defer></script>
+  </body>
+</html>

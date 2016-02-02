@@ -1,0 +1,67 @@
+
+body {
+	margin-top: 60px;
+}
+#map {
+  height: 250px;
+}
+.data {
+  height: 410px;
+}
+.plot {
+	height: 410px;
+	width: 100%;
+}
+.axis path {
+	display: none;;
+}
+#xaxis line {
+	stroke: #888;
+}
+#yaxis line {
+	stroke: #555;
+	stroke-dasharray: 2,2;
+}
+#years {
+	padding-top: 20px;
+	padding-left:230px;
+	padding-right: 20px;
+	font-size: 18pt;
+	text-align: center;
+}
+#buoylabel {
+	padding-top: 20px;
+	width: 100%;
+	font-size: 18pt;
+	text-align: center;
+}
+#stations{
+	font-size: 14pt;
+}
+.count {
+	font-size: 12pt;
+}
+.glyphicon-arrow-down {
+	color: steelblue;
+}
+.glyphicon-arrow-up {
+	color: darkred;
+}
+.glyphicon-arrow-right {
+	color: slategray;
+}
+.glyphicon-play {
+	font-size: 20pt;
+}
+.glyphicon-pause {
+	font-size: 20pt;
+}
+.page-top {
+	color: white;
+	font-size: 24px;
+	margin-top: 10px
+}
+polyline {
+	fill: none;
+}
+

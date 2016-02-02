@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>Explore Pacific Weather Data</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/pacific.css" rel="stylesheet">
+
+
+  </head>
+
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          </button>
+          <label class="page-top" href="#">Explore Pacific Weather Data</label>
+        </div>
+      </div>
+    </nav>
+	  <div class="container">
+
+		<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+		  <div class="panel panel-default">
+			<div class="panel-heading" role="tab" id="headingOne">
+			  <h4 class="panel-title">
+				<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+				  Overview (click to collapse)
+				</a>
+			  </h4>
+			</div>
+			<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+			  <div class="panel-body">
+				<label class="writeupheader">Description</label>
+				<p>
+					Explore air temperature observation data collected from 83 weather buoys located in the
+					equitorial Pacific Ocean. The data are part of NOAA's NDBC (National Data Buoy Center). 
+					The data were collected in the period from 1979 thru 2015. 
+				</p>
+				<label class="writeupheader">Map View</label>
+				<p>
+					The Map View shows the locations of the buoys. Click on a buoy marker
+					to select the it and highlight its temperature data in the Graph View.
+				</p>
+				<label class="writeupheader">Graph View</label>
+				<p>
+					The Graph View displays the median temperature values for all stations over 
+					the period from 1979 thru 2015. Hover the mouse over a line to see which station
+					it is from and highlight it on the map.
+				</p>
+				<p>
+					You can choose to view the Annual median value or the median for a specific month
+					of the year.
+				</p>
+				<label class="writeupheader">Patterns/Trends</label>
+				<p>
+					There are several patterns/trends that can be discovered in the data.
+				</p>
+				<ul>
+					<li>Temperatures in the eastern part of the area are generally lower than
+						those in the west. Hover over lines in the Graph View to investigate.</li>
+					<li>The data is more sparse in the early years and more complete in later years.</li>
+					<li>In 1997, temperatures rise noticeably due to the El Nino weather patter that year.</li>
+					<li>Temperatures vary less during the early spring months (February, March, April),
+						than in other months.</li>
+					<li>Temperatures generally rise over the course of time, although there is considerable
+						variability.</li>
+				</ul>
+			  </div>
+			</div>
+		  </div>
+		</div>
+	  <div class="row" style="height: 40px">
+		<div class="col-xs-10">
+			<label id="buoylabel">83 Equitorial Pacific Weather Buoys</label>
+		</div>
+	  </div>
+      <div class="row">
+		<div id="map" class="col-xs-12"></div>
+	  </div>
+	  <div class="row" style="height: 40px">
+		<div class="col-xs-10">
+			<label id="years"></label>
+			<select id="monthSelect" onchange="setMonth(this)">
+				<option value="all">Annual</option>
+				<option value="1">January</option>
+				<option value="2">February</option>
+				<option value="3">March</option>
+				<option value="4">April</option>
+				<option value="5">May</option>
+				<option value="6">June</option>
+				<option value="7">July</option>
+				<option value="8">August</option>
+				<option value="9">September</option>
+				<option value="10">October</option>
+				<option value="11">November</option>
+				<option value="12">December</option>
+			</select>
+		</div>
+	  </div>
+	  <div class="row">
+		<div class="col-xs-10 data">
+			<svg class="plot">
+				<g id="xaxis" class="axis"/>
+				<g id="yaxis" class="axis"/>
+				<g class="lines"/>
+				<g id="checkboxes"/>
+			</svg>
+		</div>
+		<div class="col-xs-2 data">
+			<div class="panel panel-default">
+				<div class="panel-heading"><label id="stations"></label></div>
+				<div class="panel-body">
+					<button type="button" onclick="animateMonths()"
+						class="btn btn-primary btn-md">Animate Months...</button>
+					<button type="button" onclick="highlightWest()"
+						class="btn btn-primary btn-md">Highlight West</button>
+					<button type="button" onclick="highlightEast()"
+						class="btn btn-primary btn-md">Highlight East</button>
+				</div>
+			</div>
+		</div>
+      </div>
+
+    </div><!-- /.container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="js/pacific.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBsmLKhP-eMzn4qYe3tWp3oD7zfFtRR0Pw&callback=retrieveLocations" async defer></script>
+  </body>
+</html>
