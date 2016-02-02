@@ -107,3 +107,8 @@ the notes they provided. The original version can be seen in index_v1.html.
 1. can i see more years together?
 
 ## Resources
+
+online Documentation for:
+d3.js
+javascript
+R (for EDA)
