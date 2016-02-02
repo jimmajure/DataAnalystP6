@@ -80,6 +80,9 @@ A number of small things were also changed, including better labeling of axes an
 
 ## Feedback
 
+I received feedback on my initial version froj Laura, Annie and Mitch. Here are
+the notes they provided. The original version can be seen in index_v1.html.
+
 ### Laura
 
 1. Capitalize 'ocean' in description
@@ -101,5 +104,6 @@ A number of small things were also changed, including better labeling of axes an
 1. fix year labels
 1. easier to hover over lines
 1. summary panel not clear
+1. can i see more years together?
 
 ## Resources
