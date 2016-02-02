@@ -2,7 +2,7 @@
 Udacity Data Analyst P6
 
 ## Summary
-This visualization is a *user driven* graphic that allows one to explore air temperature data
+This visualization is a *user driven* graphic that allows the viewer to explore air temperature data
 collected from 83 equitorial Pacific weather station buoys from 1979-2015.
 
 There are 2 "views": a map view showing the location of the buoys in the Pacific, and a graph view
@@ -45,10 +45,10 @@ in the map view, which highlights the corresponding line in the graph view. Hove
 over a line in the graph view also highlights the buoy the line represents in the map
 view. 
 
-In the map view highlighted elements are encoded size and color: the size of the shape 
+In the map view highlighted elements are encoded using size and color: the size of the shape 
 is increased and the color of the shape is set to red.
 
-In the graph view highlighted elements are encoded size and color: the thickness of the line 
+In the graph view highlighted elements are encoded using size and color: the thickness of the line 
 is increased and the color of the line is set to red.
 
 ### Month Selection
@@ -67,6 +67,39 @@ can easily see the temperatures in that area.
 3. *Highligh East* highlights several buoys in the eastern part of the region so the viewer
 can easily see the temperatures in that area.
 
+### Changes After Feedback
+
+My visiualization changed (index_v1.html) considerably after I received feedback. In my original version,
+I allowed the viewer to choose 2 years - a begin year and an end year - and I plotted values for only
+those two years, without the intervening data. 
+
+The reviewers struggled to understand how to select the years and how to work the animations. They also 
+wanted to see all of the data instead of only a pair of years. 
+
+A number of small things were also changed, including better labeling of axes and spelling.
+
 ## Feedback
+
+### Laura
+
+1. Capitalize 'ocean' in description
+2. animation - rules clarity from-to year
+3. can you see temp data when you highlight bar?
+4. map markers could stand out more when highlighted
+5. (axis) get commas out of years
+
+### Annie
+
+1. "data were" subject verb agreement
+1. "it can be a bumpy ride" ura dork
+1. how do you move the check from 2015
+1. 49 degrees F or C?
+
+### Mitch
+
+1. label axes
+1. fix year labels
+1. easier to hover over lines
+1. summary panel not clear
 
 ## Resources
