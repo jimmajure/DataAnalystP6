@@ -40,7 +40,7 @@
 				</a>
 			  </h4>
 			</div>
-			<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+			<div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
 			  <div class="panel-body">
 				<label class="writeupheader">Description</label>
 				<p>
@@ -78,6 +78,16 @@
 						variability.</li>
 				</ul>
 			  </div>
+			</div>
+			<div class="panel-heading" role="tab" id="headingTwo">
+			  <h4 class="panel-title">
+				  Temperatures go down from west to east. Click <a class="btn btn-default btn-sm" role="button" onclick="animateLatitude()">here</a> to see...
+			  </h4>
+			</div>
+			<div class="panel-heading" role="tab" id="headingTwo">
+			  <h4 class="panel-title">
+				  Temperatures are higher and less variable in the early spring than other times of the year. Click <a class="btn btn-default btn-sm" role="button" onclick="animateMonths()">here</a> to see...
+			  </h4>
 			</div>
 		  </div>
 		</div>
@@ -124,10 +134,8 @@
 				<div class="panel-body">
 					<button type="button" onclick="animateMonths()"
 						class="btn btn-primary btn-md">Animate Months</button>
-					<button style="margin-top:5px;" type="button" onclick="highlightWest()"
-						class="btn btn-primary btn-md">Highlight West</button>
-					<button style="margin-top:5px;" type="button" onclick="highlightEast()"
-						class="btn btn-primary btn-md">Highlight East</button>
+					<button style="margin-top:5px;" type="button" onclick="animateLatitude()"
+						class="btn btn-primary btn-md">Animate Latitudes</button>
 				</div>
 			</div>
 		</div>

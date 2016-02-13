@@ -113,7 +113,7 @@ function initTemperatureData(data) {
 		.text('Year');
 	
 	// plot the data...
-	showYears();
+	showYears();	
 }
 
 // highlight the graph line for a particular station...
@@ -144,6 +144,7 @@ function unHighlightStationGraph(station) {
 
 // highlight the map marker for a particular station...
 function highlightStationMap(station) {
+	console.log(station);
 	m  = locData.get(station).marker;
 	m.setMap(null);
 	m.icon = highlightedMapIcon;
@@ -152,6 +153,7 @@ function highlightStationMap(station) {
 
 // unhighlight the map marker for a particular station...
 function unHighlightStationMap(station) {
+	console.log(station);
 	m  = locData.get(station).marker;
 	m.setMap(null);
 	m.icon = defaultMapIcon;
@@ -206,10 +208,10 @@ function setMonth(selector) {
 function showYears() {
 	currentData = tmpData.get(currentMonth);
 	
-	d3.select('g.lines').selectAll('polyline').remove();
+	//d3.select('g.lines').selectAll('polyline').remove();
 	var sel = d3.select('g.lines').selectAll('polyline')
-		.data(currentData.entries())
-		.enter()
+		.data(currentData.entries(), function(d) {return d.key;});
+	sel.enter()
 		.append('polyline');
 	
 	sel.attr("stroke",function(d) {
@@ -226,6 +228,18 @@ function showYears() {
 			return '1';
 		}
 	})
+	.attr("station", function (d) {
+		return d.key;
+	})
+	.attr("fill","none")
+	.on('mouseover', function() {
+		var station = d3.select(this).attr('station');
+		toggleHighlightStations([station]);
+	}).on('mouseout', function() {
+		var station = d3.select(this).attr('station');
+		toggleHighlightStations([station]);
+	})
+	.transition().ease("linear").duration(500)
 	.attr("points", function (d) {
 		// d is a map for a station, generate the path...
 		var path = "";
@@ -238,21 +252,14 @@ function showYears() {
 			}
 		}
 		return path;
-	})
-	.attr("station", function (d) {
-		return d.key;
-	})
-	.attr("fill","none")
-	.on('mouseover', function() {
-		var station = d3.select(this).attr('station');
-		toggleHighlightStations([station]);
-	}).on('mouseout', function() {
-		var station = d3.select(this).attr('station');
-		toggleHighlightStations([station]);
 	});
-				
+	
+	sel.exit().remove();
+	
 	d3.select("#stations").text(currentData.size()+" Stations");
-	d3.select("#years").text(currentMonthAsString() + ": Median Air Temperature");
+	d3.select("#years").style("color", "red")
+		.text(currentMonthAsString() + ": Median Air Temperature")
+		.transition().duration(750).style("color", "black");
 }
 
 function currentMonthAsString() {
@@ -319,6 +326,37 @@ function animateMonths() {
 		}
 	}, 1000);
 }
+
+// animate the months, from january thru december,
+// one month per second...
+function animateLatitude() {
+	var i = 0;
+	latAnimation = setInterval(function() {
+		if (i==westToEast.length) {
+			highlightTheseStations([]);
+			clearInterval(latAnimation);
+		} else {
+			console.log(westToEast[i])
+			highlightTheseStations(westToEast[i]);
+			i += 1;
+		}
+	}, 2000);
+}
+
+var westToEast = [
+	['TR2N138E','TR0N138E','TR8N137E','TR8N130E',
+		'TR5N137E','TR5N147E','TR2N147E','TR0N147E'],
+	['TR5S156E','TR2S156E','TR0N156E','TR2N156E','TR5N156E','TR8N156E'],
+	['T8S165E','T5S165E','T2S165E','T1S167E','T0N165E','T2N165E','T5N165E','T8N165E','T8N167E','T8N168E','T0N170E'],
+	['T8S180W','T5S180W','T2S180W','T0N180W','T2N180W','T5N180W','T8N180W','T0N176W'],
+	['T8S170W','T5S170W','T2S170W','T0N170W','T2N170W','T5N170W','T8N170W'],
+	['T8S155W','T5S155W','T2S155W','T0N155W','T2N155W','T5N155W','T8N155W','T2N157W','T1N153W','T1S153W','T0N152W'],
+	['T5S140W','T2S140W','T0N140W','T2N140W','T5N140W','T9N140W'],
+	['T8S125W','T5S125W','T2S125W','T0N125W','T2N125W','T5N125W','T8N125W'],
+	['T8S110W','T5S110W','T2S110W','T0N110W','T2N110W','T5N110W','T8N110W'],
+	['T8S95W','T5S95W','T2S95W','T0N95W','T2N95W',
+		'T5N95W','T8N95W','T10N95W','T12N95W']
+];
 
 // force several eastern stations to be highlighted...
 function highlightEast() {
