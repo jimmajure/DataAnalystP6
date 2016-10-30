@@ -111,4 +111,4 @@ the notes they provided. The original version can be seen in index_v1.html.
 online Documentation for:
 d3.js
 javascript
-R (for EDA)
+R (for EDA) and such
