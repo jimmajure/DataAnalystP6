@@ -109,6 +109,9 @@ the notes they provided. The original version can be seen in index_v1.html.
 ## Resources
 
 online Documentation for:
+
 d3.js
+
 javascript
-R (for EDA) and such
+
+R (for EDA)
